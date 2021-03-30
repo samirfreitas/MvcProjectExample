@@ -1,9 +1,0 @@
-D:\GIT\MvcProjectExample\MvcProjectExample\src\Example.Business\bin\Debug\netcoreapp3.1\Example.Business.deps.json
-D:\GIT\MvcProjectExample\MvcProjectExample\src\Example.Business\bin\Debug\netcoreapp3.1\Example.Business.dll
-D:\GIT\MvcProjectExample\MvcProjectExample\src\Example.Business\bin\Debug\netcoreapp3.1\Example.Business.pdb
-D:\GIT\MvcProjectExample\MvcProjectExample\src\Example.Business\obj\Debug\netcoreapp3.1\Example.Business.csprojAssemblyReference.cache
-D:\GIT\MvcProjectExample\MvcProjectExample\src\Example.Business\obj\Debug\netcoreapp3.1\Example.Business.AssemblyInfoInputs.cache
-D:\GIT\MvcProjectExample\MvcProjectExample\src\Example.Business\obj\Debug\netcoreapp3.1\Example.Business.AssemblyInfo.cs
-D:\GIT\MvcProjectExample\MvcProjectExample\src\Example.Business\obj\Debug\netcoreapp3.1\Example.Business.csproj.CoreCompileInputs.cache
-D:\GIT\MvcProjectExample\MvcProjectExample\src\Example.Business\obj\Debug\netcoreapp3.1\Example.Business.dll
-D:\GIT\MvcProjectExample\MvcProjectExample\src\Example.Business\obj\Debug\netcoreapp3.1\Example.Business.pdb
