@@ -1,12 +1,12 @@
 ﻿@model Example.App.ViewsModels.VendorViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar -" + Model.Name;
 }
 
-<h1>Edit</h1>
 
-<h4>VendorViewModel</h4>
+
+<h4>@ViewData["Title"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,9 +24,10 @@
                 <span asp-validation-for="Document" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VendorType" class="control-label"></label>
-                <input asp-for="VendorType" class="form-control" />
-                <span asp-validation-for="VendorType" class="text-danger"></span>
+                <label asp-for="VendorType" class="control-label"></label><br />
+                <input type="radio" value="1" asp-for="VendorType" checked="@(Model.VendorType == 1)"  /> Pessoa Fisica <br />
+                <input type="radio" value="2" asp-for="VendorType" checked="@(Model.VendorType == 2)" /> Pessoa Juridica <br />
+
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -34,14 +35,20 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-info">Voltar</a>
             </div>
         </form>
     </div>
 </div>
+<div>
+    <partial name="_AddressDetails" />
+</div>
+<hr />
+<h4>Produtos</h4>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <partial name="../Products/_listProducts"  model="@Model.Products"/>
 </div>
 
 @section Scripts {

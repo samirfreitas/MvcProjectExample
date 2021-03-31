@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Example.App.ViewsModels.VendorViewModel>
+﻿@using Example.App.Extensions
+@model IEnumerable<Example.App.ViewsModels.VendorViewModel>
 
 @{
     ViewData["Title"] = "Fornecedores";
@@ -32,7 +33,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Document)
+                @this.DocumentFormat(item.VendorType, item.Document);
             </td>
           
             <td>
