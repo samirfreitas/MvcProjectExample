@@ -1,5 +1,5 @@
 ﻿@model Example.App.ViewsModels.VendorViewModel
-@{ 
+@{
     ViewData["Title"] = "Atualizar Endereco";
 }
 
@@ -7,7 +7,7 @@
     <h4 class="modal-title">@ViewData["Title"]</h4>
     <button type="button" class="close" data-dismiss="modal">
         <span aria-hidden="true">x</span><span class="sr-only">Fechar</span>
-    </button>    
+    </button>
 </div>
 
 <form asp-action="AddressUpdate">
@@ -26,3 +26,9 @@
 
     </div>
 </form>
+
+
+<script>
+    SearchCep();
+</script>
+
