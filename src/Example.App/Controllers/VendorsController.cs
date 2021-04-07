@@ -13,14 +13,14 @@ namespace Example.App.Controllers
     public class VendorsController : BaseController
     {
         private readonly IVendorRepository _vendorRepository;
-        private readonly IAddressRepository _addressRepository;
+        private readonly IVendorServices _vendorService;
         private readonly IMapper _mapper;
 
-        public VendorsController(IVendorRepository vendorRepository, IMapper mapper, IAddressRepository addressRepository)
+        public VendorsController(IVendorRepository vendorRepository, IMapper mapper, IVendorServices vendorService, INotificator notificator) : base(notificator)
         {
             _vendorRepository = vendorRepository;
             _mapper = mapper;
-            _addressRepository = addressRepository;
+            _vendorService = vendorService;
         }
       
         public async Task<IActionResult> Index()
@@ -53,8 +53,9 @@ namespace Example.App.Controllers
             if (ModelState.IsValid)
             {
                 var vendor = _mapper.Map<Vendor>(vendorViewModel);
-                await _vendorRepository.Add(vendor);
-            
+                await _vendorService.Add(vendor);
+
+                if (!ValidOperation()) return View(vendorViewModel);
                 return RedirectToAction(nameof(Index));
             }
             return View(vendorViewModel);
@@ -82,14 +83,15 @@ namespace Example.App.Controllers
             if (ModelState.IsValid)
             {
                 var vendor = _mapper.Map<Vendor>(vendorViewModel);
-                await _vendorRepository.Update(vendor);
+                await _vendorService.Update(vendor);
+                if (!ValidOperation()) return View(vendorViewModel);
                 return RedirectToAction(nameof(Index));
             }
             return View(vendorViewModel);
         }
 
 
-        [Route("Excluir")]
+        [HttpGet("Excluir")]
         public async Task<IActionResult> Delete(Guid id)
         {
 
@@ -104,15 +106,15 @@ namespace Example.App.Controllers
         }
 
       
-        [HttpPost, ActionName("Excluir")]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ActionName("Excluir")]     
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var vendorViewModel = await GetVendorWithAddress(id);
 
             if (vendorViewModel == null) return NotFound();
 
-            await _vendorRepository.Delete(id);
+            await _vendorService.Delete(id);
+            if (!ValidOperation()) return View(vendorViewModel);
 
             return RedirectToAction(nameof(Index));
         }
@@ -155,16 +157,13 @@ namespace Example.App.Controllers
 
             if (!ModelState.IsValid) return PartialView("AddressUpdate", vendorViewModel);
 
-            await _addressRepository.Update(_mapper.Map<Address>(vendorViewModel.Address));
+            await _vendorService.UpdateAddress(_mapper.Map<Address>(vendorViewModel.Address));
 
             var url = Url.Action("GetAddress", "Vendors", new { id = vendorViewModel.Address.VendorId });
 
             return Json(new { success = true, url });          
 
         }
-
-
-
 
 
         private async Task<VendorViewModel> GetVendorWithAddress(Guid id)

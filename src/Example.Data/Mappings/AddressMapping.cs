@@ -35,7 +35,7 @@ namespace Example.Data.Mappings
 
 
             builder.Property(a => a.Complement)
-                .IsRequired()
+             
                 .HasColumnType("varchar(255)");
 
             builder.Property(a => a.District)

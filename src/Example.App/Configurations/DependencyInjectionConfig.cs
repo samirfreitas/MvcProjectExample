@@ -1,5 +1,7 @@
 ﻿using Example.App.Extensions;
 using Example.Business.Intefaces;
+using Example.Business.Notifications;
+using Example.Business.Services;
 using Example.Data.Context;
 using Example.Data.Repository;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -17,6 +19,9 @@ namespace Example.App.Configurations
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddSingleton<IValidationAttributeAdapterProvider, CoinValidationAttributeAdapterProvider>();
 
+            services.AddScoped<INotificator, Notificator>();
+            services.AddScoped<IVendorServices, VendorServices>();
+            services.AddScoped<IProductServices, ProductServices>();
             return services;
         }
     }

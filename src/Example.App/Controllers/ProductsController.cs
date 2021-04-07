@@ -19,11 +19,13 @@ namespace Example.App.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly IVendorRepository _vendorRepository;
+        private readonly IProductServices _productService;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProductRepository productRepository, IVendorRepository vendorRepository, IMapper mapper)
+        public ProductsController(IProductRepository productRepository,IProductServices productService, IVendorRepository vendorRepository, IMapper mapper, INotificator notificator) : base(notificator)
         {
             _productRepository = productRepository;
+            _productService = productService;
             _vendorRepository = vendorRepository;
             _mapper = mapper;
             
@@ -74,7 +76,9 @@ namespace Example.App.Controllers
             if (ModelState.IsValid)
             {
                 Product entity = _mapper.Map<Product>(productViewModel);
-                await _productRepository.Add(entity);
+                await _productService.Add(entity);
+
+                if (!ValidOperation()) return View(productViewModel);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -141,7 +145,9 @@ namespace Example.App.Controllers
                     productViewModel.Image = oldProduct.Image;
                 }
 
-                await _productRepository.Update(_mapper.Map<Product>(productViewModel));
+                await _productService.Update(_mapper.Map<Product>(productViewModel));
+
+                if (!ValidOperation()) return View(productViewModel);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -175,8 +181,10 @@ namespace Example.App.Controllers
                 return NotFound();
             }
 
-            await _productRepository.Delete(id);
-    
+            await _productService.Delete(id);
+
+            if (!ValidOperation()) return View(productViewModel);
+
             return RedirectToAction(nameof(Index));
         }
 

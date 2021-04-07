@@ -26,6 +26,6 @@ namespace Example.Data.Repository
                 .Include(v=> v.Products)
                 .Include(v => v.Address)
                 .FirstOrDefaultAsync(v => v.Id == id);
-        }
+        }    
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Example.Business.Intefaces
 {
-    public interface IVendorServices
+    public interface IVendorServices : IDisposable
     {
         Task Add(Vendor vendor);
         Task Update(Vendor vendor);

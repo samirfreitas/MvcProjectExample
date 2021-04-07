@@ -34,9 +34,10 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="Excluir" method="post">
+        <vc:Summary></vc:Summary>
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="D" class="btn btn-danger" /> |
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a href="javascript:window.history.back();" class="btn btn-info">Voltar</a>
     </form>
 </div>
