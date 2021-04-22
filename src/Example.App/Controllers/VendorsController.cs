@@ -6,10 +6,13 @@ using Example.Business.Intefaces;
 using AutoMapper;
 using Example.Business.Models;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Example.App.Extensions;
 
 namespace Example.App.Controllers
 {
     [Route("Fornecedor")]
+    [Authorize]
     public class VendorsController : BaseController
     {
         private readonly IVendorRepository _vendorRepository;
@@ -22,12 +25,16 @@ namespace Example.App.Controllers
             _mapper = mapper;
             _vendorService = vendorService;
         }
-      
+
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(_mapper.Map<IEnumerable<VendorViewModel>>(await _vendorRepository.GetAll()));
         }
+       
         [Route("Detalhes")]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(Guid id)
         {
 
@@ -41,6 +48,7 @@ namespace Example.App.Controllers
         }
 
         [Route("Cadastrar")]
+        [ClaimsAuthorize("Vendor","Add")]
         public IActionResult Create()
         {
             return View();
@@ -48,6 +56,7 @@ namespace Example.App.Controllers
 
         [HttpPost("Cadastrar")]
         [ValidateAntiForgeryToken]
+        [ClaimsAuthorize("Vendor", "Add")]
         public async Task<IActionResult> Create(VendorViewModel vendorViewModel)
         {
             if (ModelState.IsValid)
@@ -62,6 +71,7 @@ namespace Example.App.Controllers
         }
 
         [Route("Editar")]
+        [ClaimsAuthorize("Vendor", "Edit")]
         public async Task<IActionResult> Edit(Guid id)
         {
       
@@ -75,6 +85,7 @@ namespace Example.App.Controllers
 
         [HttpPost("Editar")]
         [ValidateAntiForgeryToken]
+        [ClaimsAuthorize("Vendor", "Edit")]
         public async Task<IActionResult> Edit(Guid id, VendorViewModel vendorViewModel)
         {
             if (id != vendorViewModel.Id) return NotFound();
@@ -92,6 +103,7 @@ namespace Example.App.Controllers
 
 
         [HttpGet("Excluir")]
+        [ClaimsAuthorize("Vendor", "Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
 
@@ -106,7 +118,8 @@ namespace Example.App.Controllers
         }
 
       
-        [HttpPost, ActionName("Excluir")]     
+        [HttpPost, ActionName("Excluir")]
+        [ClaimsAuthorize("Vendor", "Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var vendorViewModel = await GetVendorWithAddress(id);
@@ -120,6 +133,7 @@ namespace Example.App.Controllers
         }
 
         [Route("ObterEndereco")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAddress(Guid id)
         {
             var vendor = await GetVendorWithAddress(id);
@@ -133,7 +147,8 @@ namespace Example.App.Controllers
 
 
 
-        [Route("AtualizarEndereco")]        
+        [Route("AtualizarEndereco")]
+        [ClaimsAuthorize("Vendor", "Edit")]
         public async Task<IActionResult> AddressUpdate(Guid id)
         {
             var vendor = await GetVendorWithAddress(id);
@@ -149,6 +164,7 @@ namespace Example.App.Controllers
 
         [HttpPost("AtualizarEndereco")]
         [ValidateAntiForgeryToken]
+        [ClaimsAuthorize("Vendor", "Edit")]
         public async Task<IActionResult> AddressUpdate(Guid id, VendorViewModel vendorViewModel)
         {
 

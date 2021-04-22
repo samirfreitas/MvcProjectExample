@@ -8,7 +8,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Novo Fornecedor</a>
+    <a asp-action="Create" supress-by-claim-name="Vendor" supress-by-claim-value="Add" class="btn btn-primary">Novo Fornecedor</a>
 </p>
 <table class="table table-hover">
     <thead class="thead-dark">
@@ -41,8 +41,8 @@
             </td>
             <td class="text-right">
                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="fa fa-search"></span></a>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="fa fa-edit"></span></a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="fa fa-trash"></span></a>
+                <a asp-action="Edit" disable-by-claim-name="Vendor" disable-by-claim-value="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="fa fa-edit"></span></a>
+                <a asp-action="Delete" supress-by-claim-name="Vendor" supress-by-claim-value="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="fa fa-trash"></span></a>
             </td>
         </tr>
 }

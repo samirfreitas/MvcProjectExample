@@ -12,9 +12,12 @@ using AutoMapper;
 using Example.Business.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using Example.App.Extensions;
 
 namespace Example.App.Controllers
 {
+    [Authorize]
     public class ProductsController : BaseController
     {
         private readonly IProductRepository _productRepository;
@@ -31,7 +34,7 @@ namespace Example.App.Controllers
             
         }
 
-      
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {            
             var products = await _productRepository.GetProductsVendors();
@@ -39,7 +42,7 @@ namespace Example.App.Controllers
             return View(_mapper.Map<IEnumerable<ProductViewModel>>(products));
         }
 
-        
+        [AllowAnonymous]
         public async Task<IActionResult> Details(Guid id)
         {
             var productViewModel = await GetProduct(id);
@@ -52,7 +55,7 @@ namespace Example.App.Controllers
             return View(productViewModel);
         }
 
-       
+        [ClaimsAuthorize("Product","Add")]
         public async Task<IActionResult> Create()
         {           
             return View(await PopulateVendors(new ProductViewModel()));
@@ -61,6 +64,7 @@ namespace Example.App.Controllers
        
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ClaimsAuthorize("Product", "Add")]
         public async Task<IActionResult> Create(ProductViewModel productViewModel)
         {
             productViewModel = await PopulateVendors(productViewModel);
@@ -105,7 +109,7 @@ namespace Example.App.Controllers
 
             return true;
         }
-
+        [ClaimsAuthorize("Product", "Edit")]
         public async Task<IActionResult> Edit(Guid id)
         {
 
@@ -122,6 +126,7 @@ namespace Example.App.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ClaimsAuthorize("Product", "Edit")]
         public async Task<IActionResult> Edit(Guid id,ProductViewModel productViewModel)
         {
             if (id != productViewModel.Id)
@@ -155,7 +160,7 @@ namespace Example.App.Controllers
             return View(productViewModel);
         }
 
- 
+        [ClaimsAuthorize("Product", "Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
 
@@ -170,8 +175,10 @@ namespace Example.App.Controllers
         }
 
      
-        [HttpPost, ActionName("Delete")]
+        
         [ValidateAntiForgeryToken]
+        [HttpPost, ActionName("Delete")]
+        [ClaimsAuthorize("Product", "Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var productViewModel = await GetProduct(id);
