@@ -49,6 +49,7 @@ namespace Example.App
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
                
                 app.UseHsts();
             }
